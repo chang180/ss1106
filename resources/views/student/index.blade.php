@@ -78,24 +78,31 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
         </tr>
 
-        @foreach ($students as $student)
+        @forelse ($students as $student)
             <tr>
-                <form action="  " method="post">
-                    @csrf  
-                    <td>{{ $student->id }} </td>
-                    <td><input type="text" name="name" value="{{ $student->name }}"> </td>
-                    <td><input type="text" name="chinese" value="{{ $student->chinese }}"> </td>
-                    <td><input type="text" name="english" value="{{ $student->english }}"> </td>
-                    <td><input type="text" name="math" value="{{ $student->math }}"> </td>
-                    <td><input type="text" name="phone" value="{{ $student->phone }}"></td>
+                <form action="{{ route('students.destroy', $student->id) }}" method="post">
+                    @method('delete')
+                    @csrf
+                    <td> {{ $student->id }} </td>
+                    <td> {{ $student->name }}</td>
+                    <td> {{ $student->chinese }}</td>
+                    <td> {{ $student->english }}</td>
+                    <td> {{ $student->math }}</td>
+                    <td> {{ $student->phone ?? '' }}</td>
                     <td>
-                        <a href="  " class="btn btn-info btn-sm"
+                        <a href=" {{ route('students.edit', $student->id) }} " class="btn btn-info btn-sm"
                             role="button">修改</a>
                         <input type="submit" value="刪除" name="submit" class="btn btn-danger btn-sm">
                 </form>
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7">
+                    <h3>沒有資料</h3>
+                </td>
+            </tr>
+        @endforelse
 
         <tr>
 

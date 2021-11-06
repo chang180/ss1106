@@ -55,7 +55,7 @@
     </div>
 
     <div class="center">
-        <a href=" {{ route('students.index') }} ">回首頁</a>
+        <a href="{{ route('students.index') }}">回首頁</a>
     </div>
     <br>
     <form action=" {{ route('students.store') }}" method="post">

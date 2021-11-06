@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -13,8 +14,17 @@ class StudentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        //直接引入Model
         $students = Student::all();
+
+        //引入DB
+        // $students = DB::table('students')->get();
+
+        //SQL查询
+        // $students=DB::select('select * from students');
+        // dd($students);
+
         return view('student.index')->with('students', $students);
     }
 
@@ -42,9 +52,9 @@ class StudentController extends Controller
         $student->chinese = $request->chinese;
         $student->english = $request->english;
         $student->math = $request->math;
-        $student->phone = $request->phone;
         $student->save();
-        return view('student.index');
+        $students = Student::all();
+        return view('student.index')->with('students', $students);
     }
 
     /**
@@ -66,7 +76,8 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $student=Student::where('id',$id)->first();
+        return view('student.edit')->with('student', $student);
     }
 
     /**
@@ -78,7 +89,14 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all(),$id);
+        $student=Student::find($id);
+        $student->name = $request->name;
+        $student->chinese = $request->chinese;
+        $student->english = $request->english;
+        $student->math = $request->math;
+        $student->save();
+        return redirect('/students');
     }
 
     /**
@@ -89,6 +107,8 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // dd($id);
+        Student::destroy($id);
+        return redirect('/students');
     }
 }
