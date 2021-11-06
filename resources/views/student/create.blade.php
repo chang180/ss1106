@@ -55,10 +55,10 @@
     </div>
 
     <div class="center">
-        <a href="">回首頁</a>
+        <a href=" {{ route('students.index') }} ">回首頁</a>
     </div>
     <br>
-    <form action="" method="post">
+    <form action=" {{ route('students.store') }}" method="post">
         @csrf
     <table class="center" border="1px" width="80%">
         <tr>
