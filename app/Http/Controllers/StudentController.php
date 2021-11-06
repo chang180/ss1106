@@ -16,6 +16,7 @@ class StudentController extends Controller
     public function index()
     {   
         //直接引入Model
+        // $students = Student::all()->diff(Student::where('name', 'like', '%chang180%')->get());
         $students = Student::all();
 
         //引入DB
@@ -46,6 +47,9 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        // $input=$request->all();
+        // $input=$request->except('_token');
+        // dd($input);
         //資料寫入
         $student = new Student();
         $student->name = $request->name;
@@ -53,8 +57,9 @@ class StudentController extends Controller
         $student->english = $request->english;
         $student->math = $request->math;
         $student->save();
-        $students = Student::all();
-        return view('student.index')->with('students', $students);
+        // $students = Student::all();
+        // return view('student.index')->with('students', $students);
+        return redirect('/students');
     }
 
     /**

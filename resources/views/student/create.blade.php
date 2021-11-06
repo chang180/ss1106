@@ -11,6 +11,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>student create</title>
+    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
+    <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}} "></script>
     <style>
     td {
         height: 80px;
@@ -46,6 +49,7 @@
         font-family: Verdana;
     }
     </style>
+    
 </head>
 
 <body>
@@ -86,7 +90,8 @@
 
                 <div id="example1">
                     <p>
-                       <input type="submit" value="submit" name="submit">
+                       {{-- <input type="submit" value="submit" name="submit"> --}}
+                       <button>submit</button>
                     </p>
                 </div>
             </td>
