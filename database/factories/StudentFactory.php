@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StudentFactory extends Factory
