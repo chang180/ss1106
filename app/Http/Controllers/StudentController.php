@@ -112,8 +112,10 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
+        $student=Student::find($id);
+        $student->delete();
         // dd($id);
-        Student::destroy($id);
+        // Student::destroy($id);
         return redirect('/students');
     }
 }

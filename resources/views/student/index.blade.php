@@ -11,9 +11,9 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>students</title>
     <script src="./myJs.js"></script>
-    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
-    <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}} "></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
+    <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }} "></script>
     <style>
         td {
             height: 80px;
@@ -50,7 +50,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         }
 
     </style>
-    
+
 </head>
 
 <body>
@@ -61,7 +61,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
     <div class="center">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.index') }}">回首頁</a>
+        <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href=" {{ route('students.create') }}">單筆新增</a>
 
@@ -81,20 +81,20 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
         @forelse ($students as $student)
             <tr>
-                <form action="{{ route('students.destroy', $student->id) }}" method="post">
-                    @method('delete')
-                    @csrf
-                    <td> {{ $student->id }} </td>
-                    <td> {{ $student->name }}</td>
-                    <td> {{ $student->chinese }}</td>
-                    <td> {{ $student->english }}</td>
-                    <td> {{ $student->math }}</td>
-                    <td> {{ $student->phone ?? '' }}</td>
-                    <td>
-                        <a href=" {{ route('students.edit', $student->id) }} " class="btn btn-info btn-sm"
-                            role="button">修改</a>
+                <td> {{ $student->id }} </td>
+                <td> {{ $student->name }}</td>
+                <td> {{ $student->chinese }}</td>
+                <td> {{ $student->english }}</td>
+                <td> {{ $student->math }}</td>
+                <td> {{ $student->phone ?? '' }}</td>
+                <td>
+                    <a href=" {{ route('students.edit', $student->id) }} " class="btn btn-info btn-sm"
+                        role="button">修改</a>
+                    <form action="{{ route('students.destroy', $student->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
                         <input type="submit" value="刪除" name="submit" class="btn btn-danger btn-sm">
-                </form>
+                    </form>
                 </td>
             </tr>
         @empty
@@ -104,9 +104,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 </td>
             </tr>
         @endforelse
-
         <tr>
-
             <td colspan="7">
                 <div id="example1">
                     <p>
@@ -117,7 +115,6 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
         </tr>
     </table>
-
     <br><br><br>
 
 </body>
