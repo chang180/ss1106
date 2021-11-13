@@ -74,11 +74,11 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <th>國文</th>
             <th>英文</th>
             <th>數學</th>
+            <th>地區</th>
             <th>電話</th>
             <th>修改/刪除</th>
 
         </tr>
-
         @forelse ($students as $student)
             <tr>
                 <td> {{ $student->id }} </td>
@@ -86,7 +86,8 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td> {{ $student->chinese }}</td>
                 <td> {{ $student->english }}</td>
                 <td> {{ $student->math }}</td>
-                <td> {{ $student->phone ?? '' }}</td>
+                <td> {{ $student->location->name??'' }}</td>
+                <td>{{ $student->phone->phone??'' }}</td>
                 <td>
                     <a href=" {{ route('students.edit', $student->id) }} " class="btn btn-info btn-sm"
                         role="button">修改</a>
@@ -108,7 +109,8 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <td colspan="7">
                 <div id="example1">
                     <p>
-                        <?= $strArr[0] ?>
+                        <?= $strArr[0] ?><br>
+                        {{ date("Y-m-d H:i:s") }}
                     </p>
                 </div>
             </td>

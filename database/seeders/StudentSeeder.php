@@ -20,7 +20,7 @@ class StudentSeeder extends Seeder
         //seeder
         // DB::table('students')->truncate();
         Student::unguard();
-        StudentFactory::times(10)->create();
+        StudentFactory::times(100)->create();
         Student::reguard();
     }
 }

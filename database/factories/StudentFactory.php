@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Phone;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StudentFactory extends Factory
@@ -16,9 +18,9 @@ class StudentFactory extends Factory
     {
         return [
             'name'=>$this->faker->name,
-            'chinese'=>$this->faker->numberBetween(0,100),
-            'english'=>$this->faker->numberBetween(0,100),
-            'math'=>$this->faker->numberBetween(0,100),
+            'chinese'=>$this->faker->numberBetween(50,100),
+            'english'=>$this->faker->numberBetween(50,100),
+            'math'=>$this->faker->numberBetween(50,100),
         ];
     }
 }

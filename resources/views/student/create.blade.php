@@ -71,6 +71,7 @@
             <th>國文</th>
             <th>英文</th>
             <th>數學</th>
+            <th>地區</th>
             <th>電話</th>
 
         </tr>
@@ -80,6 +81,7 @@
             <td><input type="number" name="chinese" id="chinese"></td>
             <td><input type="number" name="english" id="english"></td>
             <td><input type="number" name="math" id="math"></td>
+            <td><input type="text" name="location" id="location"></td>            
             <td><input type="text" name="phone" id="phone"></td>
         </tr>
 

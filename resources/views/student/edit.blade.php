@@ -72,6 +72,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <th>國文</th>
                 <th>英文</th>
                 <th>數學</th>
+                <th>地區</th>
                 <th>電話</th>
 
             </tr>
@@ -81,7 +82,9 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td><input type="number" name="chinese" id="chinese" value="{{ $student->chinese }}"></td>
                 <td><input type="text" name="english" id="english" value="{{ $student->english }}"></td>
                 <td><input type="text" name="math" id="math" value="{{ $student->math }}"></td>
-                <td><input type="text" name="phone" id="phone" value="{{ $student->phone ?? '' }} "></td>
+                <td><input type="text" name="location" id="location" value="{{ $student->location->name ?? '' }}"></td>
+                <td><input type="text" name="phone" id="phone" value="{{ $student->phone->phone ?? '' }}">
+                </td>
             </tr>
 
 
