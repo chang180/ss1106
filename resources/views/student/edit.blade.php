@@ -119,7 +119,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 <script>
     $(document).ready(function() {
         $('#add_hobby').click(function() {
-            $('#add_hobby').before('<td><input type="text" name="hobby[]" id=""></td>');
+            $('#add_hobby').before('<input type="text" name="hobby[]">');
         });
     });
 </script>

@@ -80,12 +80,14 @@ class StudentController extends Controller
         $location->student_id = $student->id;
         $location->save();
 
-        dd($request->hobby);
-        $hobby = new Hobby();
+        // dd($request->hobby);
         foreach ($request->hobby as $value) {
-            $hobby->hobby = $value;
-            $hobby->student_id = $student->id;
-            $hobby->save();
+            if(!empty($value)){
+                $hobby = new Hobby();
+                $hobby->hobby = $value;
+                $hobby->student_id = $student->id;
+                $hobby->save();
+            }
         }
 
         // $students = Student::all();
@@ -148,14 +150,15 @@ class StudentController extends Controller
         $location->save();
 
         Hobby::where('student_id', $id)->delete();
-        $hobby = new Hobby();
-        foreach ($request->hobby as $val) {
-            $hobby->student_id = $id;
-            $hobby->hobby = $val;
-            $hobby->save();
+        foreach($request->hobby as $value) {
+            if (!empty($value)) {
+                $hobby = new Hobby();
+                $hobby->student_id = $student->id;
+                $hobby->hobby = $value;
+                $hobby->save();
+            }
         }
 
-        // dd($hobby);
         return redirect('/students?page=' . $request->page);
     }
 
