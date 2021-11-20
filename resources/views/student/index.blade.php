@@ -14,6 +14,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
     <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }} "></script>
+    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
     <style>
         td {
             height: 80px;
@@ -67,6 +68,9 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
     </div>
     <br>
+    <div class="d-flex justify-content-center">
+        {{ $page=$students->links() }}
+    </div>
     <table class="center" border="1px" width="80%">
         <tr>
             <th>ID</th>
@@ -76,9 +80,11 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <th>數學</th>
             <th>地區</th>
             <th>電話</th>
+            <th>嗜好</th>
             <th>修改/刪除</th>
 
         </tr>
+        {{-- {{dd($students)}} --}}
         @forelse ($students as $student)
             <tr>
                 <td> {{ $student->id }} </td>
@@ -86,10 +92,17 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td> {{ $student->chinese }}</td>
                 <td> {{ $student->english }}</td>
                 <td> {{ $student->math }}</td>
-                <td> {{ $student->location->name??'' }}</td>
-                <td>{{ $student->phone->phone??'' }}</td>
+                <td> {{ $student->locationRelation->name ?? '' }}</td>
+                <td>{{ $student->phoneRelation->phone ?? '' }}</td>
                 <td>
-                    <a href=" {{ route('students.edit', $student->id) }} " class="btn btn-info btn-sm"
+                @forelse ($student->hobbyRelation as $hobby)
+                    {{ $hobby->hobby }} 
+                @empty
+                    沒有嗜好
+                @endforelse
+                </td>
+                <td>
+                    <a href=" {{ route('students.edit',[$student->id,'current_page'=>$page->paginator->currentPage()]) }} " class="btn btn-info btn-sm"
                         role="button">修改</a>
                     <form action="{{ route('students.destroy', $student->id) }}" method="post">
                         @csrf
@@ -106,15 +119,14 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             </tr>
         @endforelse
         <tr>
-            <td colspan="7">
+            <td colspan="8">
                 <div id="example1">
                     <p>
                         <?= $strArr[0] ?><br>
-                        {{ date("Y-m-d H:i:s") }}
+                        {{ date('Y-m-d H:i:s') }}
                     </p>
                 </div>
             </td>
-
         </tr>
     </table>
     <br><br><br>

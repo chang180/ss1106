@@ -12,6 +12,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
     <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}} "></script>
+    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
     <style>
         td {
             height: 80px;
@@ -61,8 +62,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <a href="{{ route('students.index') }}">回首頁</a>
     </div>
     <br>
-
-    <form action="{{ route('students.update', $student->id) }} " method="post">
+    <form action="{{ route('students.update',[$student->id,'page'=>$page]) }} " method="post">
         @csrf
         @method('PUT')
         <table class="center" border="1px" width="80%">
@@ -74,22 +74,32 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <th>數學</th>
                 <th>地區</th>
                 <th>電話</th>
+                <th>嗜好</th>
 
             </tr>
+            {{-- {{dd($student)}} --}}
             <tr>
                 <td>{{ $student->id }} </td>
                 <td><input type="text" name="name" id="name" value="{{ $student->name }}"></td>
                 <td><input type="number" name="chinese" id="chinese" value="{{ $student->chinese }}"></td>
                 <td><input type="text" name="english" id="english" value="{{ $student->english }}"></td>
                 <td><input type="text" name="math" id="math" value="{{ $student->math }}"></td>
-                <td><input type="text" name="location" id="location" value="{{ $student->location->name ?? '' }}"></td>
-                <td><input type="text" name="phone" id="phone" value="{{ $student->phone->phone ?? '' }}">
+                <td><input type="text" name="location" id="location" value="{{ $student->locationRelation->name ?? '' }}"></td>
+                <td><input type="text" name="phone" id="phone" value="{{ $student->phoneRelation->phone ?? '' }}">
+                <td>
+                    @forelse ($student->hobbyRelation as $hobby)
+                    {{-- {{dd($hobby)}} --}}
+                        <input type="text" name="hobby[]" id="" value="{{ $hobby->hobby }}">
+                    @empty
+                        <input type="text" name="hobby[]" id="" value="">
+                    @endforelse
+                    <button type="button" id="add_hobby">增加嗜好</button>
                 </td>
             </tr>
 
 
             <tr>
-                <td colspan="6">
+                <td colspan="7">
                     <div id="example1">
                         <p>
                             <input type="hidden" name="id" value="{{ $student->id }}">
@@ -106,3 +116,10 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 </body>
 
 </html>
+<script>
+    $(document).ready(function() {
+        $('#add_hobby').click(function() {
+            $('#add_hobby').before('<td><input type="text" name="hobby[]" id=""></td>');
+        });
+    });
+</script>

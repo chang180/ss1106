@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hobby;
 use App\Models\Location;
 use App\Models\Phone;
 use App\Models\Student;
@@ -15,18 +16,20 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request);
+        // dd($request->session()->get('current_page'));
         //直接引入Model
         // $students = Student::all()->diff(Student::where('name', 'like', '%chang180%')->get());
         // $students = Student::all();
-        $students = Student::with('phone')->with('location')->get();
-        // $students = Student::with('phone')->with('location')->paginate();
+        // $students = Student::with('phone')->with('location')->get();
+        $students = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->paginate(8);
         // dd($students);
         $data = array(
             'students' => $students,
         );
-        // dd($data);
+        // dd($data['students'][0]['hobbyRelation'][0]);
 
         //引入DB
         // $students = DB::table('students')->get();
@@ -77,6 +80,14 @@ class StudentController extends Controller
         $location->student_id = $student->id;
         $location->save();
 
+        dd($request->hobby);
+        $hobby = new Hobby();
+        foreach ($request->hobby as $value) {
+            $hobby->hobby = $value;
+            $hobby->student_id = $student->id;
+            $hobby->save();
+        }
+
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
         return redirect('/students');
@@ -99,10 +110,11 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $student = Student::where('id', $id)->first();
-        return view('student.edit')->with('student', $student);
+        // dd($request->current_page);
+        $student = Student::where('id', $id)->with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->first();
+        return view('student.edit')->with(['student' => $student, 'page' => $request->current_page]);
     }
 
     /**
@@ -114,7 +126,8 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all(),$id);
+        // dd($request->hobby);
+        // dd($id);
         $student = Student::find($id);
         $student->name = $request->name;
         $student->chinese = $request->chinese;
@@ -133,7 +146,17 @@ class StudentController extends Controller
         $location->student_id = $student->id;
         $location->name = $request->location;
         $location->save();
-        return redirect('/students');
+
+        Hobby::where('student_id', $id)->delete();
+        $hobby = new Hobby();
+        foreach ($request->hobby as $hobby) {
+            $hobby->student_id = $id;
+            $hobby->hobby = $hobby;
+            $hobby->save();
+        }
+
+        // dd($hobby);
+        return redirect('/students?page=' . $request->page);
     }
 
     /**
@@ -142,14 +165,15 @@ class StudentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $student = Student::with('phone')->with('location')->find($id);
+        $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
         // dd($student);
 
         Student::destroy($id);
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
-        return redirect('/students');
+        Hobby::where('student_id', $id)->delete();
+        return redirect('/students?page=' . $request->page);
     }
 }

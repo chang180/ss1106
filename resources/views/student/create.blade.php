@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
     <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}} "></script>
+    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
     <style>
     td {
         height: 80px;
@@ -73,6 +74,7 @@
             <th>數學</th>
             <th>地區</th>
             <th>電話</th>
+            <th>嗜好</th>
 
         </tr>
         <tr>
@@ -83,12 +85,13 @@
             <td><input type="number" name="math" id="math"></td>
             <td><input type="text" name="location" id="location"></td>            
             <td><input type="text" name="phone" id="phone"></td>
+            <td><input type="text" name="hobby[]" id=""></td>
         </tr>
 
 
         <tr>
 
-            <td colspan="6">
+            <td colspan="7">
 
                 <div id="example1">
                     <p>

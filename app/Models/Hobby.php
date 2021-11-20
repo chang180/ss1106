@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Location extends Model
+class Hobby extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $table='locations';
+    protected $table = 'hobbies';
 
     protected $fillable = [
         'student_id',
-        'name',
+        'hobby',
     ];
 
     /**
-     * Get the student that owns the location.
+     * Get the student that has the hobby.
      */
     public function studentRelation()
     {

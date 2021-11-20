@@ -11,14 +11,17 @@ class Phone extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table='phones';
+
     protected $fillable = [
+        'student_id',
         'phone',
     ];
 
     /**
      * Get the student that owns the phone.
      */
-    public function student()
+    public function studentRelation()
     {
         return $this->belongsTo(Student::class);
     }

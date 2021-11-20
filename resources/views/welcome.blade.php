@@ -406,7 +406,8 @@
     </style>
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
-    <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}} "></script>
+    <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}}"></script>
+    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
 </head>
 
 <body class="antialiased">

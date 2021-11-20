@@ -11,6 +11,8 @@ class Student extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table='students';
+
     protected $fillable = [
         'name',
         'chinese',
@@ -23,7 +25,7 @@ class Student extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function phone()
+    public function phoneRelation()
     {
         return $this->hasOne(Phone::class);
     }
@@ -33,8 +35,18 @@ class Student extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function location()
+    public function locationRelation()
     {
         return $this->hasOne(Location::class);
+    }
+
+    /**
+     * Get the hobbies associated with the Student
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function hobbyRelation()
+    {
+        return $this->hasMany(Hobby::class);
     }
 }
