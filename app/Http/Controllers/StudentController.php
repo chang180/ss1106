@@ -149,9 +149,9 @@ class StudentController extends Controller
 
         Hobby::where('student_id', $id)->delete();
         $hobby = new Hobby();
-        foreach ($request->hobby as $hobby) {
+        foreach ($request->hobby as $val) {
             $hobby->student_id = $id;
-            $hobby->hobby = $hobby;
+            $hobby->hobby = $val;
             $hobby->save();
         }
 
