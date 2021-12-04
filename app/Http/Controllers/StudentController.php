@@ -190,8 +190,11 @@ class StudentController extends Controller
     public function createFile(Request $request)
     {
         $input=$request->all();
+        $student = Student::find($input['id']);
+        $photo=$student->photo;
+        // dd($photo);
         // dd($input);
-        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page']]);
+        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page'],'photo'=>$photo]);
     }
 
     /** 儲存檔案

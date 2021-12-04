@@ -98,7 +98,11 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <tr>
                 <td> {{ $student->id }} </td>
                 {{-- <td> {{ $student->photo }} </td> --}}
-                <td> <img src=" {{ asset('storage/images/' . $student->photo) }} " alt=""> </td>
+                <td> 
+                    <img src=" {{ asset('storage/images/' . $student->photo) }} " alt="No image">
+                    <a href=" {{ route('students.create-file', ['id' => $student->id, 'current_page' => $page->paginator->currentPage()]) }} "
+                        class="btn btn-success btn-sm" role="button">圖片</a>
+                </td>
                 <td> {{ $student->name }}</td>
                 <td> {{ $student->chinese }}</td>
                 <td> {{ $student->english }}</td>
@@ -113,12 +117,12 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                     @endforelse
                 </td>
                 <td>
-                    <a href=" {{ route('students.create-file', ['id' => $student->id, 'current_page' => $page->paginator->currentPage()]) }} "
-                        class="btn btn-success btn-sm" role="button">加圖片</a>
                     <a href=" {{ route('students.edit', [$student->id, 'current_page' => $page->paginator->currentPage()]) }} "
                         class="btn btn-info btn-sm" role="button">修改</a>
-                    <form action="{{ route('students.destroy', [$student->id,'current_page' => $page->paginator->currentPage()]) }}" method="post">
-                    {{-- <form action="{{ route('students.destroy', $student->id) }}" method="post"> --}}
+                    <form
+                        action="{{ route('students.destroy', [$student->id, 'current_page' => $page->paginator->currentPage()]) }}"
+                        method="post">
+                        {{-- <form action="{{ route('students.destroy', $student->id) }}" method="post"> --}}
                         @csrf
                         @method('DELETE')
                         <input type="submit" value="刪除" name="submit" class="btn btn-danger btn-sm">

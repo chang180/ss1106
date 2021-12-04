@@ -67,7 +67,13 @@
             </tr>
             <tr>
                 <td>
+                    @if(!empty($photo))
+                    <img src="{{ asset('storage/images/'.$photo) }}" alt="" width="150px" height="100px">
                     <input type="file" name="file" id="">
+                    @else
+                    <img src="" alt="" width="150px" height="100px">
+                    <input type="file" name="file" id="">
+                    @endif
                 </td>
             </tr>
             <tr>
