@@ -159,6 +159,7 @@ class StudentController extends Controller
                 $hobby->save();
             }
         }
+        // dd($request);
 
         return redirect('/students?page=' . $request->page);
     }
@@ -172,13 +173,13 @@ class StudentController extends Controller
     public function destroy(Request $request, $id)
     {
         $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
-        // dd($student);
+        // dd($request->current_page);
 
         Student::destroy($id);
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
         Hobby::where('student_id', $id)->delete();
-        return redirect('/students?page=' . $request->page);
+        return redirect('/students?page=' . $request->current_page);
     }
 
     /** 檔案上傳

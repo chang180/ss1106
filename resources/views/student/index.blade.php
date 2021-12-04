@@ -94,7 +94,6 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <th>修改/刪除</th>
 
         </tr>
-        {{-- {{dd($students)}} --}}
         @forelse ($students as $student)
             <tr>
                 <td> {{ $student->id }} </td>
@@ -118,7 +117,8 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                         class="btn btn-success btn-sm" role="button">加圖片</a>
                     <a href=" {{ route('students.edit', [$student->id, 'current_page' => $page->paginator->currentPage()]) }} "
                         class="btn btn-info btn-sm" role="button">修改</a>
-                    <form action="{{ route('students.destroy', $student->id) }}" method="post">
+                    <form action="{{ route('students.destroy', [$student->id,'current_page' => $page->paginator->currentPage()]) }}" method="post">
+                    {{-- <form action="{{ route('students.destroy', $student->id) }}" method="post"> --}}
                         @csrf
                         @method('DELETE')
                         <input type="submit" value="刪除" name="submit" class="btn btn-danger btn-sm">
