@@ -201,10 +201,16 @@ class StudentController extends Controller
     public function storeFile(Request $request)
     {
         $input=$request->all();
-        // dd($input);
         $file = $request->file('file');
-        Storage::disk('public')->put($input['student_id'], $file);
+        // dd($file);
+        
+        $student = Student::find($input['student_id']);
+        $student->photo = $file->getClientOriginalName();
+        $student->save();
+
         // dd($file->hashName());
+        $file->storeAs('images', $file->getClientOriginalName(), 'public');
+
         return redirect('/students?page=' . $request->page);
     }
 }

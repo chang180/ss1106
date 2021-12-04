@@ -50,6 +50,13 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             font-family: Verdana;
         }
 
+        img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 150px;
+        }
+
     </style>
 
 </head>
@@ -91,7 +98,8 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         @forelse ($students as $student)
             <tr>
                 <td> {{ $student->id }} </td>
-                <td> 圖片 </td>
+                {{-- <td> {{ $student->photo }} </td> --}}
+                <td> <img src=" {{ asset('storage/images/' . $student->photo) }} " alt=""> </td>
                 <td> {{ $student->name }}</td>
                 <td> {{ $student->chinese }}</td>
                 <td> {{ $student->english }}</td>
