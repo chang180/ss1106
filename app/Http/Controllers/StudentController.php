@@ -8,6 +8,7 @@ use App\Models\Phone;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -82,7 +83,7 @@ class StudentController extends Controller
 
         // dd($request->hobby);
         foreach ($request->hobby as $value) {
-            if(!empty($value)){
+            if (!empty($value)) {
                 $hobby = new Hobby();
                 $hobby->hobby = $value;
                 $hobby->student_id = $student->id;
@@ -150,7 +151,7 @@ class StudentController extends Controller
         $location->save();
 
         Hobby::where('student_id', $id)->delete();
-        foreach($request->hobby as $value) {
+        foreach ($request->hobby as $value) {
             if (!empty($value)) {
                 $hobby = new Hobby();
                 $hobby->student_id = $student->id;
@@ -177,6 +178,33 @@ class StudentController extends Controller
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
         Hobby::where('student_id', $id)->delete();
+        return redirect('/students?page=' . $request->page);
+    }
+
+    /** 檔案上傳
+     * 
+     * 
+     */
+
+    public function createFile(Request $request)
+    {
+        $input=$request->all();
+        // dd($input);
+        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page']]);
+    }
+
+    /** 儲存檔案
+     * 
+     * 
+     */
+
+    public function storeFile(Request $request)
+    {
+        $input=$request->all();
+        // dd($input);
+        $file = $request->file('file');
+        Storage::disk('public')->put($input['student_id'], $file);
+        // dd($file->hashName());
         return redirect('/students?page=' . $request->page);
     }
 }

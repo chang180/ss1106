@@ -14,7 +14,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
     <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }} "></script>
-    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
+    <script src="{{ asset('assets/jquery/jquery-3.6.0.js') }}"></script>
     <style>
         td {
             height: 80px;
@@ -64,16 +64,19 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href=" {{ route('students.create') }}">單筆新增</a>
+        <a href="{{ route('students.create') }}">單筆新增</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ route('students.create-file') }}">create-file</a>
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        {{ $page=$students->links() }}
+        {{ $page = $students->links() }}
     </div>
     <table class="center" border="1px" width="80%">
         <tr>
             <th>ID</th>
+            <th>圖片</th>
             <th>姓名</th>
             <th>國文</th>
             <th>英文</th>
@@ -88,22 +91,25 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         @forelse ($students as $student)
             <tr>
                 <td> {{ $student->id }} </td>
+                <td> 圖片 </td>
                 <td> {{ $student->name }}</td>
                 <td> {{ $student->chinese }}</td>
                 <td> {{ $student->english }}</td>
                 <td> {{ $student->math }}</td>
                 <td> {{ $student->locationRelation->name ?? '' }}</td>
-                <td>{{ $student->phoneRelation->phone ?? '' }}</td>
+                <td> {{ $student->phoneRelation->phone ?? '' }}</td>
                 <td>
-                @forelse ($student->hobbyRelation as $hobby)
-                    {{ $hobby->hobby }} 
-                @empty
-                    沒有嗜好
-                @endforelse
+                    @forelse ($student->hobbyRelation as $hobby)
+                        {{ $hobby->hobby }}
+                    @empty
+                        沒有嗜好
+                    @endforelse
                 </td>
                 <td>
-                    <a href=" {{ route('students.edit',[$student->id,'current_page'=>$page->paginator->currentPage()]) }} " class="btn btn-info btn-sm"
-                        role="button">修改</a>
+                    <a href=" {{ route('students.create-file', ['id' => $student->id, 'current_page' => $page->paginator->currentPage()]) }} "
+                        class="btn btn-success btn-sm" role="button">加圖片</a>
+                    <a href=" {{ route('students.edit', [$student->id, 'current_page' => $page->paginator->currentPage()]) }} "
+                        class="btn btn-info btn-sm" role="button">修改</a>
                     <form action="{{ route('students.destroy', $student->id) }}" method="post">
                         @csrf
                         @method('DELETE')
