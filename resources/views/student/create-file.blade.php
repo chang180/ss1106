@@ -68,11 +68,11 @@
             <tr>
                 <td>
                     @if (!empty($photo))
-                        <img src="{{ asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px">
-                        <input type="file" name="file" class="" onchange="readURL(this);">
+                        <img src="{{ asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px" class="photo" >
+                        <input type="file" name="file" onchange="readURL(this);">
                     @else
-                        <img src="" alt="" width="150px" height="100px">
-                        <input type="file" name="file" class="photo" onchange="readURL(this);">
+                        <img src="" alt="" width="150px" height="100px" class="photo" >
+                        <input type="file" name="file" onchange="readURL(this);">
                     @endif
                 </td>
             </tr>
@@ -87,12 +87,12 @@
 </html>
 <script>
     function readURL(input) {
-        console.log(input);
+        console.log(input.files);
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function(e) {
-                $('.class').attr('src', e.target.result).width(150).height(100);
+                $('.photo').attr('src', e.target.result).width(150).height(100);
             };
 
             reader.readAsDataURL(input.files[0]);
