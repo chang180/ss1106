@@ -62,11 +62,11 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <a href="{{ route('students.index') }}">回首頁</a>
     </div>
     <br>
-    <form action=" {{ route('students.store') }}" method="post">
+    <form action=" {{ route('students.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <table class="center" border="1px" width="80%">
             <tr>
-                <th>ID</th>
+                <th>圖片</th>
                 <th>姓名</th>
                 <th>國文</th>
                 <th>英文</th>
@@ -77,7 +77,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
             </tr>
             <tr>
-                <td>id</td>
+                <td><input type="file" name="photo" onchange="readURL(this)"><img src="" alt="" class="photo"></td>
                 <td><input type="text" name="name" id="name"></td>
                 <td><input type="number" name="chinese" id="chinese"></td>
                 <td><input type="number" name="english" id="english"></td>
@@ -115,4 +115,17 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             $('#add_hobby').before('<input type="text" name="hobby[]">');
         });
     });
+
+    function readURL(input) {
+        // console.log(input.files);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('.photo').attr('src', e.target.result).width(150).height(100);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>

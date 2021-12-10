@@ -62,9 +62,14 @@ class StudentController extends Controller
     {
         // $input=$request->all();
         // $input=$request->except('_token');
-        // dd($request);
+        // dd($request->files);
+        $file=$request->file('photo');
+        
+        // dd($file->hashName());
+        $file->storeAs('images', $file->getClientOriginalName(), 'public');
         //資料寫入
         $student = new Student();
+        $student->photo = $file->getClientOriginalName();
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
@@ -207,13 +212,14 @@ class StudentController extends Controller
         $input=$request->all();
         $file = $request->file('file');
         // dd($file);
-        
-        $student = Student::find($input['student_id']);
-        $student->photo = $file->getClientOriginalName();
-        $student->save();
-
-        // dd($file->hashName());
-        $file->storeAs('images', $file->getClientOriginalName(), 'public');
+        if($file){
+            $student = Student::find($input['student_id']);
+            $student->photo = $file->getClientOriginalName();
+            $student->save();
+            
+            // dd($file->hashName());
+            $file->storeAs('images', $file->getClientOriginalName(), 'public');
+        }
 
         return redirect('/students?page=' . $request->page);
     }
