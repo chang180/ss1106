@@ -67,18 +67,18 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <h5 style="margin-bottom:18px"></h5>
     </div>
 
+    {{ $page = $students->links() }}
     <div class="center">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.create') }}">單筆新增</a>
+        <a href="{{ route('students.create',['last_page'=>$page->paginator->lastpage()]) }}">單筆新增</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('students.create-file') }}">create-file</a>
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        {{ $page = $students->links() }}
     </div>
     <table class="center" border="1px" width="80%">
         <tr>

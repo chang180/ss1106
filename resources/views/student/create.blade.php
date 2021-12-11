@@ -64,6 +64,8 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <br>
     <form action=" {{ route('students.store') }}" method="post" enctype="multipart/form-data">
         @csrf
+        {{-- {{ dd($last_page)}} --}}
+        <input type="hidden" name="last_page" value="{{ $last_page }}">
         <table class="center" border="1px" width="80%">
             <tr>
                 <th>圖片</th>

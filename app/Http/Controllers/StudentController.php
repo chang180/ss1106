@@ -47,9 +47,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('student.create');
+        // dd($request);
+        // dd($request->session()->get('current_page'));
+        //直接引入Model
+    
+        // dd($request->last_page);
+        return view('student.create')->with(['last_page' => $request->last_page]);
     }
 
     /**
@@ -62,7 +67,7 @@ class StudentController extends Controller
     {
         // $input=$request->all();
         // $input=$request->except('_token');
-        // dd($request->files);
+        // dd($request->last_page);
         $file=$request->file('photo');
         
         // dd($file->hashName());
@@ -98,7 +103,8 @@ class StudentController extends Controller
 
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
-        return redirect('/students');
+        // return redirect('/students');
+        return redirect('/students?page=' . $request->last_page);
     }
 
     /**
