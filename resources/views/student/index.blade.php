@@ -99,7 +99,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td> {{ $student->id }} </td>
                 {{-- <td> {{ $student->photo }} </td> --}}
                 <td> 
-                    <img src=" {{ asset('storage/images/' . $student->photo) }} " alt="No image">
+                    <img src=" {{ filter_var($student->photo, FILTER_VALIDATE_URL)?$student->photo:asset('storage/images/' . $student->photo) }} " alt="No image">
                     <a href=" {{ route('students.create-file', ['id' => $student->id, 'current_page' => $page->paginator->currentPage()]) }} "
                         class="btn btn-success btn-sm" role="button">圖片</a>
                 </td>
@@ -111,7 +111,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td> {{ $student->phoneRelation->phone ?? '' }}</td>
                 <td>
                     @forelse ($student->hobbyRelation as $hobby)
-                        {{ $hobby->hobby }}
+                        {{ $hobby->hobby }}<br>
                     @empty
                         沒有嗜好
                     @endforelse

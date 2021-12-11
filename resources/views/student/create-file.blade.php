@@ -68,7 +68,7 @@
             <tr>
                 <td>
                     @if (!empty($photo))
-                        <img src="{{ asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px" class="photo" >
+                        <img src="{{ filter_var($photo, FILTER_VALIDATE_URL)?$photo:asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px" class="photo" >
                         <input type="file" name="file" onchange="readURL(this);">
                     @else
                         <img src="" alt="" width="150px" height="100px" class="photo" >

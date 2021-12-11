@@ -16,7 +16,7 @@ class CreatePhonesTable extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->integer('student_id');
+            $table->integer('student_id')->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();

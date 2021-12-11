@@ -88,7 +88,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             {{-- {{dd($student)}} --}}
             <tr>
                 <td>{{ $student->id }} </td>
-                <td><input type="file" name="photo" onchange="readURL(this)"><img src="{{ asset('storage/images/'.$student->photo) }}" class="photo"></td>
+                <td><input type="file" name="photo" onchange="readURL(this)"><img src="{{ filter_var($student->photo, FILTER_VALIDATE_URL)?$student->photo:asset('storage/images/' . $student->photo) }}" class="photo"></td>
                 <td><input type="text" name="name" id="name" value="{{ $student->name }}"></td>
                 <td><input type="number" name="chinese" id="chinese" value="{{ $student->chinese }}"></td>
                 <td><input type="text" name="english" id="english" value="{{ $student->english }}"></td>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Database\Factories\StudentFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,7 +12,7 @@ class Student extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table='students';
+    protected $table = 'students';
 
     protected $fillable = [
         'name',
@@ -29,7 +30,7 @@ class Student extends Model
     {
         return $this->hasOne(Phone::class);
     }
-    
+
     /**
      * Get the location associated with the Student
      *
@@ -48,5 +49,15 @@ class Student extends Model
     public function hobbyRelation()
     {
         return $this->hasMany(Hobby::class);
+    }
+
+    /**
+     * Create a new factory instance for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    protected static function newFactory()
+    {
+        return StudentFactory::new();
     }
 }

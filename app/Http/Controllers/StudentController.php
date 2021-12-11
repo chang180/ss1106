@@ -144,10 +144,12 @@ class StudentController extends Controller
         // dd($id);
 
         $file=$request->file('photo');
-        $file->storeAs('images', $file->getClientOriginalName(), 'public');
-
         $student = Student::find($id);
-        $student->photo = $file->getClientOriginalName();
+        
+        if ($file) {
+            $file->storeAs('images', $file->getClientOriginalName(), 'public');
+            $student->photo = $file->getClientOriginalName();
+        }
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
@@ -176,6 +178,7 @@ class StudentController extends Controller
             }
         }
         // dd($request);
+
 
         return redirect('/students?page=' . $request->page);
     }

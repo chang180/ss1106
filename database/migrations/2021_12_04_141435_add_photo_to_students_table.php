@@ -27,6 +27,7 @@ class AddPhotoToStudentsTable extends Migration
     {
         Schema::table('students', function (Blueprint $table) {
             //
+            $table->dropColumn('photo');
         });
     }
 }

@@ -14,7 +14,7 @@ class ModifyBrandInPhones extends Migration
     public function up()
     {
         Schema::table('phones', function (Blueprint $table) {
-            //brand預設值為samsung
+            //brand預設值為Google
             $table->string('brand')->default('Google')->comment('Manifacturer')->change();
         });
     }
@@ -26,9 +26,5 @@ class ModifyBrandInPhones extends Migration
      */
     public function down()
     {
-        Schema::table('phones', function (Blueprint $table) {
-            //brand預設值為null
-            $table->string('brand')->default('')->comment('')->nullable()->change();
-        });
     }
 }

@@ -15,7 +15,7 @@ class CreateLocationsTable extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->integer('student_id');
+            $table->integer('student_id')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();

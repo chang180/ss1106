@@ -26,9 +26,9 @@ class AddBrandToPhones extends Migration
      */
     public function down()
     {
-        Schema::table('phones', function (Blueprint $table) {
-            //移除brand欄位
-            $table->dropColumn('brand');
-        });
+        // Schema::table('phones', function (Blueprint $table) {
+        //     //移除brand欄位
+        //     $table->dropColumn('brand');
+        // });
     }
 }
