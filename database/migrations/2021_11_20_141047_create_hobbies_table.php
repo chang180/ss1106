@@ -15,7 +15,7 @@ class CreateHobbiesTable extends Migration
     {
         Schema::create('hobbies', function (Blueprint $table) {
             $table->id();
-            $table->integer('student_id');
+            $table->integer('student_id')->nullable();
             $table->string('hobby')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -47,9 +47,14 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('student.create');
+        // dd($request);
+        // dd($request->session()->get('current_page'));
+        //直接引入Model
+    
+        // dd($request->last_page);
+        return view('student.create')->with(['last_page' => $request->last_page]);
     }
 
     /**
@@ -62,9 +67,14 @@ class StudentController extends Controller
     {
         // $input=$request->all();
         // $input=$request->except('_token');
-        // dd($request);
+        // dd($request->last_page);
+        $file=$request->file('photo');
+        
+        // dd($file->getClientOriginalName());
+        $file->storeAs('images', $file->getClientOriginalName(), 'public');
         //資料寫入
         $student = new Student();
+        $student->photo = $file->getClientOriginalName();
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
@@ -93,7 +103,8 @@ class StudentController extends Controller
 
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
-        return redirect('/students');
+        // return redirect('/students');
+        return redirect('/students?page=' . $request->last_page);
     }
 
     /**
@@ -131,7 +142,14 @@ class StudentController extends Controller
     {
         // dd($request->hobby);
         // dd($id);
+
+        $file=$request->file('photo');
         $student = Student::find($id);
+        
+        if ($file) {
+            $file->storeAs('images', $file->getClientOriginalName(), 'public');
+            $student->photo = $file->getClientOriginalName();
+        }
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
@@ -159,6 +177,8 @@ class StudentController extends Controller
                 $hobby->save();
             }
         }
+        // dd($request);
+
 
         return redirect('/students?page=' . $request->page);
     }
@@ -172,13 +192,13 @@ class StudentController extends Controller
     public function destroy(Request $request, $id)
     {
         $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
-        // dd($student);
+        // dd($request->current_page);
 
         Student::destroy($id);
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
         Hobby::where('student_id', $id)->delete();
-        return redirect('/students?page=' . $request->page);
+        return redirect('/students?page=' . $request->current_page);
     }
 
     /** 檔案上傳
@@ -189,8 +209,11 @@ class StudentController extends Controller
     public function createFile(Request $request)
     {
         $input=$request->all();
+        $student = Student::find($input['id']);
+        $photo=$student->photo;
+        // dd($photo);
         // dd($input);
-        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page']]);
+        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page'],'photo'=>$photo]);
     }
 
     /** 儲存檔案
@@ -201,10 +224,17 @@ class StudentController extends Controller
     public function storeFile(Request $request)
     {
         $input=$request->all();
-        // dd($input);
         $file = $request->file('file');
-        Storage::disk('public')->put($input['student_id'], $file);
-        // dd($file->hashName());
+        // dd($file);
+        if($file){
+            $student = Student::find($input['student_id']);
+            $student->photo = $file->getClientOriginalName();
+            $student->save();
+            
+            // dd($file->hashName());
+            $file->storeAs('images', $file->getClientOriginalName(), 'public');
+        }
+
         return redirect('/students?page=' . $request->page);
     }
 }

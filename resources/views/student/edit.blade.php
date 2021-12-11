@@ -48,6 +48,13 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             font-family: Verdana;
         }
 
+        img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 150px;
+        }
+
     </style>
     
 </head>
@@ -62,12 +69,13 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <a href="{{ route('students.index') }}">回首頁</a>
     </div>
     <br>
-    <form action="{{ route('students.update',[$student->id,'page'=>$page]) }} " method="post">
+    <form action="{{ route('students.update',[$student->id,'page'=>$page]) }} " method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <table class="center" border="1px" width="80%">
             <tr>
                 <th>ID</th>
+                <th>圖片</th>
                 <th>姓名</th>
                 <th>國文</th>
                 <th>英文</th>
@@ -80,6 +88,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             {{-- {{dd($student)}} --}}
             <tr>
                 <td>{{ $student->id }} </td>
+                <td><input type="file" name="photo" onchange="readURL(this)"><img src="{{ filter_var($student->photo, FILTER_VALIDATE_URL)?$student->photo:asset('storage/images/' . $student->photo) }}" class="photo"></td>
                 <td><input type="text" name="name" id="name" value="{{ $student->name }}"></td>
                 <td><input type="number" name="chinese" id="chinese" value="{{ $student->chinese }}"></td>
                 <td><input type="text" name="english" id="english" value="{{ $student->english }}"></td>
@@ -121,5 +130,18 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         $('#add_hobby').click(function() {
             $('#add_hobby').before('<input type="text" name="hobby[]">');
         });
-    });
+    })
+
+    function readURL(input) {
+        // console.log(input.files);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('.photo').attr('src', e.target.result).width(150).height(100);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 </script>

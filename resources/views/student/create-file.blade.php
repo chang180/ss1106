@@ -67,7 +67,13 @@
             </tr>
             <tr>
                 <td>
-                    <input type="file" name="file" id="">
+                    @if (!empty($photo))
+                        <img src="{{ filter_var($photo, FILTER_VALIDATE_URL)?$photo:asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px" class="photo" >
+                        <input type="file" name="file" onchange="readURL(this);">
+                    @else
+                        <img src="" alt="" width="150px" height="100px" class="photo" >
+                        <input type="file" name="file" onchange="readURL(this);">
+                    @endif
                 </td>
             </tr>
             <tr>
@@ -79,3 +85,17 @@
 </body>
 
 </html>
+<script>
+    function readURL(input) {
+        console.log(input.files);
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                $('.photo').attr('src', e.target.result).width(150).height(100);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
