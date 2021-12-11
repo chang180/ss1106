@@ -70,7 +70,7 @@ class StudentController extends Controller
         // dd($request->last_page);
         $file=$request->file('photo');
         
-        // dd($file->hashName());
+        // dd($file->getClientOriginalName());
         $file->storeAs('images', $file->getClientOriginalName(), 'public');
         //資料寫入
         $student = new Student();
@@ -142,7 +142,12 @@ class StudentController extends Controller
     {
         // dd($request->hobby);
         // dd($id);
+
+        $file=$request->file('photo');
+        $file->storeAs('images', $file->getClientOriginalName(), 'public');
+
         $student = Student::find($id);
+        $student->photo = $file->getClientOriginalName();
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
