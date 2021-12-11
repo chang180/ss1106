@@ -19,14 +19,12 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request);
-        // dd($request->session()->get('current_page'));
         //直接引入Model
         // $students = Student::all()->diff(Student::where('name', 'like', '%chang180%')->get());
         // $students = Student::all();
-        // $students = Student::with('phone')->with('location')->get();
         $students = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->paginate(8);
-        // dd($students);
+        // dd($request->page);
+        // dd($students->lastPage());
         $data = array(
             'students' => $students,
         );
@@ -207,13 +205,16 @@ class StudentController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
-        // dd($request->current_page);
+        // $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
+        $lastpage=(int)ceil(Student::all()->count()/8);
+        // dd($lastpage,$request->current_page);
+        $request->current_page=($request->current_page>$lastpage)?$lastpage:$request->current_page;
 
         Student::destroy($id);
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
         Hobby::where('student_id', $id)->delete();
+
         return redirect('/students?page=' . $request->current_page);
     }
 
