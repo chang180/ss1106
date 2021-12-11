@@ -68,10 +68,10 @@
             <tr>
                 <td>
                     @if (!empty($photo))
-                        <img src="{{ filter_var($photo, FILTER_VALIDATE_URL)?$photo:asset('storage/images/' . $photo) }}" alt="" width="150px" height="100px" class="photo" >
+                        <img src="{{ filter_var($photo, FILTER_VALIDATE_URL)?$photo:asset('storage/images/' . $photo) }}" alt="" width="600px" height="400px" class="photo" ><br>
                         <input type="file" name="file" onchange="readURL(this);">
                     @else
-                        <img src="" alt="" width="150px" height="100px" class="photo" >
+                        <img src="" alt="" width="600px" height="400px" class="photo" ><br>
                         <input type="file" name="file" onchange="readURL(this);">
                     @endif
                 </td>
@@ -92,7 +92,7 @@
             var reader = new FileReader();
 
             reader.onload = function(e) {
-                $('.photo').attr('src', e.target.result).width(150).height(100);
+                $('.photo').attr('src', e.target.result).width(600).height(400);
             };
 
             reader.readAsDataURL(input.files[0]);

@@ -92,14 +92,20 @@ class StudentController extends Controller
         $location->save();
 
         // dd($request->hobby);
+        $hobby_tmp = [];
         foreach ($request->hobby as $value) {
-            if (!empty($value)) {
-                $hobby = new Hobby();
-                $hobby->hobby = $value;
-                $hobby->student_id = $student->id;
-                $hobby->save();
-            }
+            $hobby_tmp [] =[
+                'hobby' => $value,
+                'student_id' => $student->id,
+            ];
+            // if (!empty($value)) {
+            //     $hobby = new Hobby();
+            //     $hobby->hobby = $value;
+            //     $hobby->student_id = $student->id;
+            //     $hobby->save();
+            // }
         }
+        Hobby::upsert($hobby_tmp,['hobby'],['student_id']);
 
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
@@ -169,18 +175,28 @@ class StudentController extends Controller
         $location->save();
 
         Hobby::where('student_id', $id)->delete();
+        // 多筆資料存法, 一筆一筆存較沒效率
+        // foreach ($request->hobby as $value) {
+        //     if (!empty($value)) {
+        //         $hobby = new Hobby();
+        //         $hobby->student_id = $student->id;
+        //         $hobby->hobby = $value;
+        //         $hobby->save();
+        //     }
+        // }
+
+        //可使用upsert一次儲存，較有效率：
+        // dd($request->hobby);
+        $tmp_hobby = [];
         foreach ($request->hobby as $value) {
             if (!empty($value)) {
-                $hobby = new Hobby();
-                $hobby->student_id = $student->id;
-                $hobby->hobby = $value;
-                $hobby->save();
+                $tmp_hobby[] = ['hobby' => $value, 'student_id' => $student->id];
             }
         }
-        // dd($request);
-
-
+        // dd($tmp_hobby);
+        Hobby::upsert($tmp_hobby, ['hobby'],['student_id']);
         return redirect('/students?page=' . $request->page);
+        // echo "Success";
     }
 
     /**
