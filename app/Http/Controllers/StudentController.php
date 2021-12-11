@@ -50,7 +50,7 @@ class StudentController extends Controller
         // dd($request);
         // dd($request->session()->get('current_page'));
         //直接引入Model
-    
+
         // dd($request->last_page);
         return view('student.create')->with(['last_page' => $request->last_page]);
     }
@@ -66,13 +66,16 @@ class StudentController extends Controller
         // $input=$request->all();
         // $input=$request->except('_token');
         // dd($request->last_page);
-        $file=$request->file('photo');
-        
+        $file = $request->file('photo');
+
         // dd($file->getClientOriginalName());
-        $file->storeAs('images', $file->getClientOriginalName(), 'public');
         //資料寫入
         $student = new Student();
-        $student->photo = $file->getClientOriginalName();
+        if ($file) {
+            $file->storeAs('images', $file->getClientOriginalName(), 'public');
+            $student->photo = $file->getClientOriginalName();
+        }
+
         $student->name = $request->name;
         $student->chinese = $request->chinese;
         $student->english = $request->english;
@@ -92,7 +95,7 @@ class StudentController extends Controller
         // dd($request->hobby);
         $hobby_tmp = [];
         foreach ($request->hobby as $value) {
-            $hobby_tmp [] =[
+            $hobby_tmp[] = [
                 'hobby' => $value,
                 'student_id' => $student->id,
             ];
@@ -103,7 +106,7 @@ class StudentController extends Controller
             //     $hobby->save();
             // }
         }
-        Hobby::upsert($hobby_tmp,['hobby'],['student_id']);
+        Hobby::upsert($hobby_tmp, ['hobby'], ['student_id']);
 
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
@@ -147,9 +150,9 @@ class StudentController extends Controller
         // dd($request->hobby);
         // dd($id);
 
-        $file=$request->file('photo');
+        $file = $request->file('photo');
         $student = Student::find($id);
-        
+
         if ($file) {
             $file->storeAs('images', $file->getClientOriginalName(), 'public');
             $student->photo = $file->getClientOriginalName();
@@ -192,7 +195,7 @@ class StudentController extends Controller
             }
         }
         // dd($tmp_hobby);
-        Hobby::upsert($tmp_hobby, ['hobby'],['student_id']);
+        Hobby::upsert($tmp_hobby, ['hobby'], ['student_id']);
         return redirect('/students?page=' . $request->page);
         // echo "Success";
     }
@@ -206,15 +209,16 @@ class StudentController extends Controller
     public function destroy(Request $request, $id)
     {
         // $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
-        $lastpage=(int)ceil(Student::all()->count()/8);
-        // dd($lastpage,$request->current_page);
-        $request->current_page=($request->current_page>$lastpage)?$lastpage:$request->current_page;
-
+        
         Student::destroy($id);
         Phone::where('student_id', $id)->delete();
         Location::where('student_id', $id)->delete();
         Hobby::where('student_id', $id)->delete();
-
+        
+        $lastpage = (int)ceil(Student::all()->count() / 8);
+        $request->current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
+        // dd($lastpage,$request->current_page);
+        
         return redirect('/students?page=' . $request->current_page);
     }
 
@@ -225,12 +229,12 @@ class StudentController extends Controller
 
     public function createFile(Request $request)
     {
-        $input=$request->all();
+        $input = $request->all();
         $student = Student::find($input['id']);
-        $photo=$student->photo;
+        $photo = $student->photo;
         // dd($photo);
         // dd($input);
-        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page'],'photo'=>$photo]);
+        return view('student.create-file')->with(['student_id' => $input['id'], 'page' => $input['current_page'], 'photo' => $photo]);
     }
 
     /** 儲存檔案
@@ -240,14 +244,14 @@ class StudentController extends Controller
 
     public function storeFile(Request $request)
     {
-        $input=$request->all();
+        $input = $request->all();
         $file = $request->file('file');
         // dd($file);
-        if($file){
+        if ($file) {
             $student = Student::find($input['student_id']);
             $student->photo = $file->getClientOriginalName();
             $student->save();
-            
+
             // dd($file->hashName());
             $file->storeAs('images', $file->getClientOriginalName(), 'public');
         }
