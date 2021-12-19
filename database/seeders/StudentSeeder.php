@@ -6,12 +6,10 @@ use App\Models\Hobby;
 use App\Models\Location;
 use App\Models\Phone;
 use App\Models\Student;
-use Database\Factories\LocationFactory;
 use Database\Factories\StudentFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use phpDocumentor\Reflection\Location as ReflectionLocation;
 
 class StudentSeeder extends Seeder
 {
@@ -22,21 +20,33 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-        //seeder
-        // DB::table('students')->truncate();
+        //清空
+        DB::table('students')->truncate();
+        DB::table('phones')->truncate();
+        DB::table('locations')->truncate();
+        DB::table('hobbies')->truncate();
         
-        Student::unguard();
-        Location::unguard();
-        Phone::unguard();
-        Hobby::unguard();
-        StudentFactory::times(300)
-        ->haslocationRelation(1)
-        ->hasphoneRelation(1)
-        ->hashobbyRelation(3)
-        ->create();
-        Student::reguard();
-        Location::reguard();
-        Phone::reguard();
-        Hobby::reguard();
+        // Student::unguard();
+        // Location::unguard();
+        // Phone::unguard();
+        // Hobby::unguard();
+
+        // StudentFactory::times(50)
+        // ->haslocationRelation(1)
+        // ->hasphoneRelation(1)
+        // ->hashobbyRelation(3)
+        // ->create();
+
+        for($i=1; $i<=50; $i++){
+            StudentFactory::times(1)
+            ->haslocationRelation(1)
+            ->hasphoneRelation(1)
+            ->hashobbyRelation(rand(1,3))
+            ->create();
+        }
+        // Student::reguard();
+        // Location::reguard();
+        // Phone::reguard();
+        // Hobby::reguard();
     }
 }

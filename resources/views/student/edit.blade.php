@@ -96,12 +96,12 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                 <td><input type="text" name="location" id="location" value="{{ $student->locationRelation->name ?? '' }}"></td>
                 <td><input type="text" name="phone" id="phone" value="{{ $student->phoneRelation->phone ?? '' }}">
                 <td>
-                    @forelse ($student->hobbyRelation as $hobby)
-                    {{-- {{dd($hobby)}} --}}
-                        <input type="text" name="hobby[]" id="" value="{{ $hobby->hobby }}">
+                    @each('hobby.item', $student->hobbyRelation, 'hobby', 'hobby.no-item')
+                    {{-- @forelse ($student->hobbyRelation as $hobby)
+                        @include('hobby.item',['hobby'=>$hobby])
                     @empty
-                        <input type="text" name="hobby[]" id="" value="">
-                    @endforelse
+                        @include('hobby.no-item')
+                    @endforelse --}}
                     <button type="button" id="add_hobby">增加嗜好</button>
                 </td>
             </tr>

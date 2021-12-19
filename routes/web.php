@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // students 學生
+Route::get('students/export/', [StudentController::class, 'export'])->name('students.export');
+
 Route::get('/create-file', [StudentController::class, 'createFile'])->name('students.create-file');
 Route::post('/store-file', [StudentController::class, 'storeFile'])->name('students.store-file');
 
@@ -23,6 +25,8 @@ Route::resource('students', StudentController::class);
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+
 
 
     

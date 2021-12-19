@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Support\Facades\DB;
 use Database\Factories\LocationFactory;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,13 @@ class LocationSeeder extends Seeder
      */
     public function run()
     {
-        LocationFactory::times(10)->create();
+        DB::table('locations')->truncate();
+
+        // DB::table('locations')
+        // ->insert([
+        //     'name' => '台北市',
+        // ]);
+
+        LocationFactory::times(3)->create();
     }
 }
