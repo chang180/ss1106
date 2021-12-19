@@ -67,18 +67,21 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <h5 style="margin-bottom:18px"></h5>
     </div>
 
-    {{ $page = $students->links() }}
     <div class="center">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.create',['last_page'=>$page->paginator->lastpage()]) }}">單筆新增</a>
+        <a href="{{ route('students.create',['last_page'=>$lastpage]) }}">單筆新增</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('students.create-file') }}">create-file</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ route('students.export') }}">下載報表</a>
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
+        {{ $page = $students->links() }}
+        {{-- {{dd($page)}} --}}
     </div>
     <table class="center" border="1px" width="80%">
         <tr>
@@ -94,47 +97,11 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             <th>修改/刪除</th>
 
         </tr>
+        {{-- {{dd($page)}} --}}
         @forelse ($students as $student)
-            <tr>
-                <td> {{ $student->id }} </td>
-                {{-- <td> {{ $student->photo }} </td> --}}
-                <td> 
-                    <img src=" {{ filter_var($student->photo, FILTER_VALIDATE_URL)?$student->photo:asset('storage/images/' . $student->photo) }} " alt="No image">
-                    <a href=" {{ route('students.create-file', ['id' => $student->id, 'current_page' => $page->paginator->currentPage()]) }} "
-                        class="btn btn-success btn-sm" role="button">圖片</a>
-                </td>
-                <td> {{ $student->name }}</td>
-                <td> {{ $student->chinese }}</td>
-                <td> {{ $student->english }}</td>
-                <td> {{ $student->math }}</td>
-                <td> {{ $student->locationRelation->name ?? '' }}</td>
-                <td> {{ $student->phoneRelation->phone ?? '' }}</td>
-                <td>
-                    @forelse ($student->hobbyRelation as $hobby)
-                        {{ $hobby->hobby }}<br>
-                    @empty
-                        沒有嗜好
-                    @endforelse
-                </td>
-                <td>
-                    <a href=" {{ route('students.edit', [$student->id, 'current_page' => $page->paginator->currentPage()]) }} "
-                        class="btn btn-info btn-sm" role="button">修改</a>
-                    <form
-                        action="{{ route('students.destroy', [$student->id, 'current_page' => $page->paginator->currentPage()]) }}"
-                        method="post">
-                        {{-- <form action="{{ route('students.destroy', $student->id) }}" method="post"> --}}
-                        @csrf
-                        @method('DELETE')
-                        <input type="submit" value="刪除" name="submit" class="btn btn-danger btn-sm">
-                    </form>
-                </td>
-            </tr>
+            @include('student.item',['student'=>$student,'page'=>$page->paginator->currentPage()])
         @empty
-            <tr>
-                <td colspan="7">
-                    <h3>沒有資料</h3>
-                </td>
-            </tr>
+            @include('student.empty')
         @endforelse
         <tr>
             <td colspan="8">

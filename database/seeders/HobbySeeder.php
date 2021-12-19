@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class PhoneSeeder extends Seeder
+class HobbySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,11 +14,11 @@ class PhoneSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('phones')->truncate();
+        // DB::table('hobbies')->truncate();
 
-        DB::table('phones')
+        DB::table('hobbies')
         ->insert([
-            'phone' => '0912345678',
+            'hobby' => '玩游戏',
         ]);
     }
 }

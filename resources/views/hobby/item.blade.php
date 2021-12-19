@@ -1,0 +1,1 @@
+<input type="text" name="hobby[]" id="" value="{{ $hobby->hobby }}">
