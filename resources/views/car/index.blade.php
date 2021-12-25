@@ -9,7 +9,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>students</title>
+    <title>Cars</title>
     <script src="./myJs.js"></script>
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
@@ -63,7 +63,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
 <body>
     <div class="center">
-        <h3>學生資料</h3>
+        <h3>車車</h3>
         <h5 style="margin-bottom:18px"></h5>
     </div>
 
@@ -71,18 +71,16 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.create',['last_page'=>$lastpage]) }}">單筆新增</a>
+        <a href="{{ route('cars.create',['last_page'=>$lastpage]) }}">單筆新增</a>
+        {{-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ route('cars.export') }}">下載報表</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.create-file') }}">create-file</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('students.export') }}">下載報表</a>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('phones.export') }}">下載電話</a>
+        <a href="{{ route('cars.export') }}">下載電話</a> --}}
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
-        {{ $page = $students->links() }}
+        {{ $page = $cars->links() }}
         {{-- 選擇頁數：<select name="" id="">
             @for($i=1;$i<=$lastpage;$i++)
             <option><a href="{{ route('students.page/'.$i) }}">第{{$i}}頁</a></option>
@@ -93,22 +91,15 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <table class="center" border="1px" width="80%">
         <tr>
             <th>ID</th>
-            <th>圖片</th>
-            <th>姓名</th>
-            <th>國文</th>
-            <th>英文</th>
-            <th>數學</th>
-            <th>地區</th>
-            <th>電話</th>
-            <th>嗜好</th>
+            <th>名字</th>
             <th>修改/刪除</th>
 
         </tr>
         {{-- {{dd($page)}} --}}
-        @forelse ($students as $student)
-            @include('student.item',['student'=>$student,'page'=>$page->paginator->currentPage()])
+        @forelse ($cars as $car)
+            @include('car.item',['car'=>$car,'page'=>$page->paginator->currentPage()])
         @empty
-            @include('student.empty')
+            @include('car.empty')
         @endforelse
         <tr>
             <td colspan="8">

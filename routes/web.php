@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,10 @@ Route::get('/create-file', [StudentController::class, 'createFile'])->name('stud
 Route::post('/store-file', [StudentController::class, 'storeFile'])->name('students.store-file');
 
 Route::resource('students', StudentController::class);
-// Route::get('students.page/{page}',[StudentController::class, 'index'])->name('students.page');
+Route::get('students.page/{page}',[StudentController::class, 'show'])->name('students.page');
+
+// cars 車子(物件導向)
+Route::resource('cars', CarController::class);
 
 Route::get('/', function () {
     return view('welcome');

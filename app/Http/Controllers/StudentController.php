@@ -124,12 +124,12 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int  $page
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($page)
     {
-        //
+        return redirect('/students?page=' . $page);
     }
 
     /**
