@@ -32,6 +32,9 @@ class StudentController extends Controller
             'students' => $students,
             'lastpage' => $students->lastPage(),
         );
+        for ($i=0;$i<=100;$i++) {
+            array_push($data['test'],$i);
+        }
         // dd($data);
 
         //引入DB
