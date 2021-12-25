@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PhonesExport;
 use App\Models\Hobby;
 use App\Models\Location;
 use App\Models\Phone;
@@ -32,9 +33,6 @@ class StudentController extends Controller
             'students' => $students,
             'lastpage' => $students->lastPage(),
         );
-        for ($i=0;$i<=100;$i++) {
-            array_push($data['test'],$i);
-        }
         // dd($data);
 
         //引入DB
@@ -42,7 +40,6 @@ class StudentController extends Controller
 
         //SQL查询
         // $students=DB::select('select * from students');
-        // dd($students);
 
         return view('student.index')->with($data);
     }
@@ -228,11 +225,12 @@ class StudentController extends Controller
         Hobby::where('student_id', $id)->delete();
         // 圖片使用原檔名，有可以刪到不同筆資料使用的同張圖，若要刪除圖片，需要修改檔名規則
         
+        //刪到該頁最後一項時，回到有資料的最後頁
         $lastpage = (int)ceil(Student::all()->count() / 5);
-        $request->current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
-        // dd($lastpage,$request->current_page);
+        $current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
+        // dd($current_page,$lastpage,$request->current_page);
         
-        return redirect('/students?page=' . $request->current_page);
+        return redirect('/students?page=' . $current_page);
     }
 
     /** 檔案上傳
@@ -278,5 +276,13 @@ class StudentController extends Controller
     public function export() 
     {
         return Excel::download(new StudentsExport, 'students.xlsx');
+    }
+
+    /** 輸出 phones
+     * 
+     */
+    public function export_phones() 
+    {
+        return Excel::download(new PhonesExport, 'phones.xlsx');
     }
 }

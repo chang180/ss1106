@@ -16,11 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 // students 學生
 Route::get('students/export/', [StudentController::class, 'export'])->name('students.export');
+Route::get('students/export_phones/', [StudentController::class, 'export_phones'])->name('phones.export');
 
 Route::get('/create-file', [StudentController::class, 'createFile'])->name('students.create-file');
 Route::post('/store-file', [StudentController::class, 'storeFile'])->name('students.store-file');
 
 Route::resource('students', StudentController::class);
+// Route::get('students.page/{page}',[StudentController::class, 'index'])->name('students.page');
 
 Route::get('/', function () {
     return view('welcome');

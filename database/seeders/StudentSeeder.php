@@ -37,7 +37,7 @@ class StudentSeeder extends Seeder
         // ->hashobbyRelation(3)
         // ->create();
 
-        for($i=1; $i<=50; $i++){
+        for($i=1; $i<=500; $i++){
             StudentFactory::times(1)
             ->haslocationRelation(1)
             ->hasphoneRelation(1)

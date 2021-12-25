@@ -76,11 +76,18 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <a href="{{ route('students.create-file') }}">create-file</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('students.export') }}">下載報表</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="{{ route('phones.export') }}">下載電話</a>
 
     </div>
     <br>
     <div class="d-flex justify-content-center">
         {{ $page = $students->links() }}
+        選擇頁數：<select name="" id="">
+            {{-- @for($i=1;$i<=$lastpage;$i++)
+            <option><a href="{{ route('students.page/'.$i) }}">第{{$i}}頁</a></option>
+            @endfor --}}
+        </select>
         {{-- {{dd($page)}} --}}
     </div>
     <table class="center" border="1px" width="80%">
