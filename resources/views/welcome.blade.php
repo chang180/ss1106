@@ -427,7 +427,10 @@
                 @endauth
             </div>
         @endif
-        <h1><a class="btn btn-success" href="{{ route('students.index') }}">資料庫CRUD範例</a></h1>
+        <div class="d-flex flex-column">
+            <h1><a class="btn btn-success" href="{{ route('students.index') }}">資料庫CRUD範例</a></h1>
+            <h1><a class="btn btn-info" href="{{ route('cars.index') }}">範例2</a></h1>
+        </div>
     </div>
 </body>
 

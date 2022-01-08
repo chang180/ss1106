@@ -21,8 +21,12 @@ class CarController extends Controller
      */
     public function index()
     {
-        $data = $this->carReporsity->getAll()->paginate(5);
-        return view('car.index')->with(['cars' => $data]);
+        $cars = $this->carReporsity->getAll();
+        $data=array(
+            'cars' => $cars,
+            'lastpage' => $cars->lastPage(),
+        );
+        return view('car.index')->with($data);
     }
 
     /**
@@ -93,5 +97,22 @@ class CarController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Remove selected items.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function delAll(Request $request)
+    {
+        dd($request);
+        $ids = $request->input('ids');
+        // $this->carReporsity->deleteAll($ids);
+        // return redirect()->route('car.index');
+        // $current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
+
+        // return redirect('/cars?page=' . $current_page);
     }
 }

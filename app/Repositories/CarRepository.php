@@ -4,13 +4,15 @@ namespace App\Repositories;
 use App\Models\Entities\Car;
 
 class CarRepository{
+
     private $car;
+    
     public function __construct(Car $car){
         $this->car = $car;
     }
 
     public function getAll(){
-        return $this->car->all();
+        return $this->car->paginate(env('PAGINATE_ALL'));
     }
 
     public function getById($id){
@@ -18,9 +20,12 @@ class CarRepository{
     }
 
     public function addOne($data){
-        $car= new Car();
+        $car= new $this->car;
         $car->name = $data['name'];
         $car->save();
     }
     
+    private function myCarFun(){
+        
+    }
 }

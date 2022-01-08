@@ -9,9 +9,10 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Cars</title>
-    <script src="./myJs.js"></script>
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    {{-- <script src="./myJs.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
     <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }} "></script>
     <script src="{{ asset('assets/jquery/jquery-3.6.0.js') }}"></script>
@@ -71,7 +72,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="{{ route('cars.create',['last_page'=>$lastpage]) }}">單筆新增</a>
+        <a href="{{ route('cars.create', ['last_page' => $lastpage]) }}">單筆新增</a>
         {{-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('cars.export') }}">下載報表</a>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -82,7 +83,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <div class="d-flex justify-content-center">
         {{ $page = $cars->links() }}
         {{-- 選擇頁數：<select name="" id="">
-            @for($i=1;$i<=$lastpage;$i++)
+            @for ($i = 1; $i <= $lastpage; $i++)
             <option><a href="{{ route('students.page/'.$i) }}">第{{$i}}頁</a></option>
             @endfor
         </select> --}}
@@ -112,8 +113,47 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             </td>
         </tr>
     </table>
+    @if ($cars)
+        <button type="button" id="selectAll">全選</button>
+        <button type="button" id="cancelAll">全不選</button>
+        <button type="button" id="delAll">刪除</button>
+    @endif
     <br><br><br>
 
 </body>
 
 </html>
+<script>
+    
+    $('#selectAll').click(function() {
+        $('input[type="checkbox"]').prop('checked', true);
+    });
+    $('#cancelAll').click(function() {
+        $('input[type="checkbox"]').prop('checked', false);
+    });
+    $('#delAll').click(function() {
+        var checkbox = $('input[type="checkbox"]');
+        var checkbox_arr = [];
+        for (var i = 0; i < checkbox.length; i++) {
+            if (checkbox[i].checked) {
+                checkbox_arr.push(checkbox[i].value);
+            }
+        }
+        if (checkbox_arr.length == 0) {
+            alert('請選擇要刪除的資料');
+        } else {
+            if (confirm('確定要刪除嗎？')) {
+                axios.post('/cars/delAll', {
+                        checkbox_arr: checkbox_arr
+                    })
+                    .then(function(response) {
+                        alert(response.data.msg);
+                        location.reload();
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
+        }
+    });
+</script>

@@ -19,7 +19,7 @@ class Location extends Model
     ];
 
     /**
-     * Get the student that owns the location.
+     * Get the location that the students belong to.
      */
     public function studentRelation()
     {

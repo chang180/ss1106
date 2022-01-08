@@ -3,44 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PhonesExport;
-use App\Models\Hobby;
-use App\Models\Location;
-use App\Models\Phone;
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
 use App\Exports\StudentsExport;
+use App\Repositories\StudentRepository;
+use App\Repositories\HobbyRepository;
+use App\Repositories\PhoneRepository;
+use App\Repositories\LocationRepository;
+
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
+    private $StudentRepository;
+    private $HobbyRepository;
+    private $PhoneRepository;
+    private $LocationRepository;
+
+    public function __construct(
+        StudentRepository $StudentRepository,
+        HobbyRepository $HobbyRepository,
+        PhoneRepository $PhoneRepository,
+        LocationRepository $LocationRepository
+        ){
+        $this->StudentRepository = $StudentRepository;
+        $this->HobbyRepository = $HobbyRepository;
+        $this->PhoneRepository = $PhoneRepository;
+        $this->LocationRepository = $LocationRepository;
+    }
+
+    // public function __construct(
+    //     private StudentRepository $StudentRepository,
+    //     private HobbyRepository $HobbyRepository,
+    //     private PhoneRepository $PhoneRepository,
+    //     private LocationRepository $LocationRepository
+    // ) {
+    // }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        //直接引入Model
-        // $students = Student::all()->diff(Student::where('name', 'like', '%chang180%')->get());
-        // $students = Student::all();
-        $students = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->paginate(5);
-        // dd($request->page);
+        // $this->StudentRepository->set_name('王大明');
+        // dd($this->StudentRepository->studentName);
+        // $data=$this->StudentRepository->getAll();
+        $paginate = env('PAGINATE_ALL');
+        $students = $this->StudentRepository->getPaginate($paginate);
         // dd($students);
         $data = array(
             'students' => $students,
             'lastpage' => $students->lastPage(),
         );
-        // dd($data);
-
-        //引入DB
-        // $students = DB::table('students')->get();
-
-        //SQL查询
-        // $students=DB::select('select * from students');
-
         return view('student.index')->with($data);
     }
 
@@ -67,53 +84,55 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // $input=$request->all();
-        // $input=$request->except('_token');
+        // $input= new Collection($request->except('_token'));
+        $input = $request->except('_token');
+        // dd($input);
+        // $file = $request->file('photo');
+        $student_id = $this->StudentRepository->addOne($input);
+        $this->HobbyRepository->addOne($input['hobby'], $student_id);
+        $this->PhoneRepository->addOne($input['phone'], $student_id);
+        $this->LocationRepository->addOne($input['location'], $student_id);
+
         // dd($request->last_page);
-        $file = $request->file('photo');
 
         // dd($file->getClientOriginalName());
+
         //資料寫入
-        $student = new Student();
-        if ($file) {
-            $file->storeAs('images', $file->getClientOriginalName(), 'public');
-            $student->photo = $file->getClientOriginalName();
-        }
+        // $student = new Student();
+        // if ($file) {
+        //     $file->storeAs('images', $file->getClientOriginalName(), 'public');
+        //     $student->photo = $file->getClientOriginalName();
+        // }
 
-        $student->name = $request->name;
-        $student->chinese = $request->chinese;
-        $student->english = $request->english;
-        $student->math = $request->math;
-        $student->save();
+        // $student->name = $request->name;
+        // $student->chinese = $request->chinese;
+        // $student->english = $request->english;
+        // $student->math = $request->math;
+        // $student->save();
 
-        $phone = new Phone();
-        $phone->phone = $request->phone;
-        $phone->student_id = $student->id;
-        $phone->save();
+        // $phone = new Phone();
+        // $phone->phone = $request->phone;
+        // $phone->student_id = $student->id;
+        // $phone->save();
 
-        $location = new Location();
-        $location->name = $request->location;
-        $location->student_id = $student->id;
-        $location->save();
+        // $location = new Location();
+        // $location->name = $request->location;
+        // $location->student_id = $student->id;
+        // $location->save();
 
-        // dd($request->hobby);
-        $hobby_tmp = [];
-        foreach ($request->hobby as $value) {
-            $hobby_tmp[] = [
-                'hobby' => $value,
-                'student_id' => $student->id,
-            ];
-            // if (!empty($value)) {
-            //     $hobby = new Hobby();
-            //     $hobby->hobby = $value;
-            //     $hobby->student_id = $student->id;
-            //     $hobby->save();
-            // }
-        }
-        Hobby::upsert($hobby_tmp, ['hobby'], ['student_id']);
+        // $hobby_tmp = [];
+        // foreach ($request->hobby as $value) {
+        //     $hobby_tmp[] = [
+        //         'hobby' => $value,
+        //         'student_id' => $student->id,
+        //     ];
+        // }
+        // Hobby::upsert($hobby_tmp, ['hobby'], ['student_id']);
 
-        $lastpage = Student::paginate(5)->lastpage();
-        // dd($lastpage);
+
+        $lastpage = Student::paginate(env('PAGINATE_ALL'))->lastpage();
 
         // $students = Student::all();
         // return view('student.index')->with('students', $students);
@@ -157,34 +176,41 @@ class StudentController extends Controller
     {
         // dd($request->hobby);
         // dd($id);
+        $input = $request->except('_token');
+        // dd($input);
+        $this->StudentRepository->updateOne($input, $id);
+        $this->HobbyRepository->updateOne($input['hobby'], $id);
+        $this->PhoneRepository->updateOne($input['phone'], $id);
+        $this->LocationRepository->updateOne($input['location'], $id);
 
-        $file = $request->file('photo');
-        $student = Student::find($id);
 
-        if ($file) {
-            $file->storeAs('images', $file->getClientOriginalName(), 'public');
-            $student->photo = $file->getClientOriginalName();
-        }
-        $student->name = $request->name;
-        $student->chinese = $request->chinese;
-        $student->english = $request->english;
-        $student->math = $request->math;
-        $student->save();
+        // $file = $request->file('photo');
+        // $student = Student::find($id);
 
-        $phone = Phone::where('student_id', $id)->first() ?? new Phone();
+        // if ($file) {
+        //     $file->storeAs('images', $file->getClientOriginalName(), 'public');
+        //     $student->photo = $file->getClientOriginalName();
+        // }
+        // $student->name = $request->name;
+        // $student->chinese = $request->chinese;
+        // $student->english = $request->english;
+        // $student->math = $request->math;
+        // $student->save();
+
+        // $phone = Phone::where('student_id', $id)->first() ?? new Phone();
         // dd($phone);
-        $phone->student_id = $student->id;
-        $phone->phone = $request->phone;
-        $phone->save();
+        // $phone->student_id = $student->id;
+        // $phone->phone = $request->phone;
+        // $phone->save();
 
-        $location = Location::where('student_id', $id)->first() ?? new Location();
+        // $location = Location::where('student_id', $id)->first() ?? new Location();
         // dd($location);
-        $location->student_id = $student->id;
-        $location->name = $request->location;
-        $location->save();
+        // $location->student_id = $student->id;
+        // $location->name = $request->location;
+        // $location->save();
 
         //一對多的儲存，通常是先刪除原本的資料，再新增，因為一般這種關係的資料比較不重要，比對欄位再存的方式反而浪費時間
-        Hobby::where('student_id', $id)->delete();
+        // Hobby::where('student_id', $id)->delete();
         // 多筆資料存法, 一筆一筆存較沒效率
         // foreach ($request->hobby as $value) {
         //     if (!empty($value)) {
@@ -197,14 +223,14 @@ class StudentController extends Controller
 
         //可使用upsert一次儲存，較有效率：
         // dd($request->hobby);
-        $tmp_hobby = [];
-        foreach ($request->hobby as $value) {
-            if (!empty($value)) {
-                $tmp_hobby[] = ['hobby' => $value, 'student_id' => $student->id];
-            }
-        }
+        // $tmp_hobby = [];
+        // foreach ($request->hobby as $value) {
+        //     if (!empty($value)) {
+        //         $tmp_hobby[] = ['hobby' => $value, 'student_id' => $student->id];
+        //     }
+        // }
         // dd($tmp_hobby);
-        Hobby::upsert($tmp_hobby, ['hobby'], ['student_id']);
+        // Hobby::upsert($tmp_hobby, ['hobby'], ['student_id']);
         return redirect('/students?page=' . $request->page);
         // echo "Success"; //開發中可先不導頁，方便debugbar看資料
     }
@@ -218,18 +244,22 @@ class StudentController extends Controller
     public function destroy(Request $request, $id)
     {
         // $student = Student::with('phoneRelation')->with('locationRelation')->with('hobbyRelation')->find($id);
-        
-        Student::destroy($id);
-        Phone::where('student_id', $id)->delete();
-        Location::where('student_id', $id)->delete();
-        Hobby::where('student_id', $id)->delete();
+
+        // Student::destroy($id);
+        // Phone::where('student_id', $id)->delete();
+        // Location::where('student_id', $id)->delete();
+        // Hobby::where('student_id', $id)->delete();
         // 圖片使用原檔名，有可以刪到不同筆資料使用的同張圖，若要刪除圖片，需要修改檔名規則
-        
+
+        $this->StudentRepository->deleteOne($id);
+        $this->HobbyRepository->deleteOne($id);
+        $this->PhoneRepository->deleteOne($id);
+        $this->LocationRepository->deleteOne($id);
         //刪到該頁最後一項時，回到有資料的最後頁
-        $lastpage = (int)ceil(Student::all()->count() / 5);
+        $lastpage = (int)ceil(Student::all()->count() / env('PAGINATE_ALL'));
         $current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
         // dd($current_page,$lastpage,$request->current_page);
-        
+
         return redirect('/students?page=' . $current_page);
     }
 
@@ -273,7 +303,7 @@ class StudentController extends Controller
     /** 輸出 excel
      * 
      */
-    public function export() 
+    public function export()
     {
         return Excel::download(new StudentsExport, 'students.xlsx');
     }
@@ -281,7 +311,7 @@ class StudentController extends Controller
     /** 輸出 phones
      * 
      */
-    public function export_phones() 
+    public function export_phones()
     {
         return Excel::download(new PhonesExport, 'phones.xlsx');
     }
