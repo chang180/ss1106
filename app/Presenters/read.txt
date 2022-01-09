@@ -1,0 +1,1 @@
+若將顯示邏輯都寫在view，會造成view肥大而難以維護，基於SOLID原則，我們應該使用Presenter模式輔助view，將相關的顯示邏輯封裝在不同的presenter，方便中大型項目的維護。

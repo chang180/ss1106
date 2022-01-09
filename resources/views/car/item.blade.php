@@ -1,4 +1,5 @@
 <tr>
+    <td> <input type="checkbox" class="checkbox check" name="del[]" value="{{ $car->id }}"> </td>
     <td> {{ $car->id }} </td>
     <td> {{ $car->name }}</td>
     <td>
