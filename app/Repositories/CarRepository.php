@@ -3,6 +3,7 @@ namespace App\Repositories;
 
 use App\Models\Entities\Car;
 
+
 class CarRepository{
     private $car;
     public function __construct(Car $car){
@@ -10,7 +11,12 @@ class CarRepository{
     }
 
     public function getAll(){
-        return $this->car->all();
+        $cars=$this->car->paginate(5);
+        $data = array(
+            'cars' => $cars,
+            'lastpage' => $cars->lastPage(),
+        );
+        return $data;
     }
 
     public function getById($id){

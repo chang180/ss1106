@@ -66,7 +66,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
         <h3>車車</h3>
         <h5 style="margin-bottom:18px"></h5>
     </div>
-
+    {{-- {{dd($data)}} --}}
     <div class="center">
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="{{ route('welcome') }}">回首頁</a>

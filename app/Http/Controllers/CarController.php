@@ -21,8 +21,9 @@ class CarController extends Controller
      */
     public function index()
     {
-        $data = $this->carReporsity->getAll()->paginate(5);
-        return view('car.index')->with(['cars' => $data]);
+        $data = $this->carReporsity->getAll();
+        // dd($data);
+        return view('car.index')->with(['cars' => $data['cars'], 'lastpage' => $data['lastpage']]);
     }
 
     /**
