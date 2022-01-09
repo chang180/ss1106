@@ -27,8 +27,10 @@ class CarRepository{
     }
     
     public function delAll($ids){
-        foreach($ids as $id){
-            $this->car->find($id)->delete();
-        }
+        // foreach($ids as $id){
+        //     $this->car->find($id)->delete();
+        // }
+        $this->car->whereIn("id", $ids)->delete();
+        return $ids;
     }
 }

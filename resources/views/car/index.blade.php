@@ -153,7 +153,6 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
                         _token: _token
                     },
                     success: function(data) {
-                        console.log(data.status);
                         if (data.status == 'success') {
                             alert('刪除成功');
                             location.reload();
