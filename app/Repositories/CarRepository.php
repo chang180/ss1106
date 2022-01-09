@@ -26,7 +26,9 @@ class CarRepository{
         $car->save();
     }
     
-    private function myCarFun(){
-        
+    public function delAll($ids){
+        foreach($ids as $id){
+            $this->car->find($id)->delete();
+        }
     }
 }

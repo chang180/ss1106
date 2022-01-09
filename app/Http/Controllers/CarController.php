@@ -107,12 +107,8 @@ class CarController extends Controller
      */
     public function delAll(Request $request)
     {
-        dd($request);
-        $ids = $request->input('ids');
-        // $this->carReporsity->deleteAll($ids);
-        // return redirect()->route('car.index');
-        // $current_page = ($request->current_page > $lastpage) ? $lastpage : $request->current_page;
-
-        // return redirect('/cars?page=' . $current_page);
+        $input=$request->except('_token');
+        $this->carReporsity->delAll($input['ids']);
+        return response()->json(['status' => 'success']);
     }
 }

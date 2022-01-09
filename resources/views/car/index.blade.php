@@ -81,6 +81,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     </div>
     <br>
     <div class="d-flex justify-content-center">
+        @csrf
         {{ $page = $cars->links() }}
         {{-- 選擇頁數：<select name="" id="">
             @for ($i = 1; $i <= $lastpage; $i++)
@@ -124,16 +125,16 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 
 </html>
 <script>
-    
     $('#selectAll').click(function() {
         $('input[type="checkbox"]').prop('checked', true);
     });
     $('#cancelAll').click(function() {
         $('input[type="checkbox"]').prop('checked', false);
     });
-    $('#delAll').click(function() {
-        var checkbox = $('input[type="checkbox"]');
-        var checkbox_arr = [];
+    $('#delAll').click(function(e) {
+        let checkbox = $('input[type="checkbox"]');
+        let checkbox_arr = [];
+        let _token = $('input[name="_token"]').val();
         for (var i = 0; i < checkbox.length; i++) {
             if (checkbox[i].checked) {
                 checkbox_arr.push(checkbox[i].value);
@@ -143,16 +144,24 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
             alert('請選擇要刪除的資料');
         } else {
             if (confirm('確定要刪除嗎？')) {
-                axios.post('/cars/delAll', {
-                        checkbox_arr: checkbox_arr
-                    })
-                    .then(function(response) {
-                        alert(response.data.msg);
-                        location.reload();
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ route('cars.delAll') }}',
+                    type: 'post',
+                    data: {
+                        ids: checkbox_arr,
+                        _token: _token
+                    },
+                    success: function(data) {
+                        console.log(data.status);
+                        if (data.status == 'success') {
+                            alert('刪除成功');
+                            location.reload();
+                        } else {
+                            alert('刪除失敗');
+                        }
+                    }
+                });
             }
         }
     });

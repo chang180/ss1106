@@ -26,7 +26,7 @@ Route::resource('students', StudentController::class);
 Route::get('students.page/{page}',[StudentController::class, 'show'])->name('students.page');
 
 // cars 車子(物件導向)
-Route::post('cars/delAll', [CarController::class, 'delAll'])->name('cars.delAll');
+
 Route::resource('cars', CarController::class);
 
 Route::get('/', function () {
