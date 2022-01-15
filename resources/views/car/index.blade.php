@@ -11,8 +11,14 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Cars</title>
-    {{-- <script src="./myJs.js"></script>
-    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"> --}}
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
     <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }} "></script>
     <script src="{{ asset('assets/jquery/jquery-3.6.0.js') }}"></script>
@@ -63,6 +69,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
 </head>
 
 <body>
+    {{-- @include('layouts.navigation') --}}
     <div class="center">
         <h3>車車</h3>
         <h5 style="margin-bottom:18px"></h5>
@@ -92,6 +99,7 @@ $strArr = ['By failing to prepare, you are preparing to fail.'];
     </div>
     <table class="center" border="1px" width="80%">
         <tr>
+            <th>選擇框</th>
             <th>ID</th>
             <th>名字</th>
             <th>修改/刪除</th>

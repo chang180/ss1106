@@ -404,10 +404,19 @@
         }
 
     </style>
-    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/bootstrap-5.1.3/css/bootstrap.min.css')}} ">
-    <script src="{{asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js')}}"></script>
-    <script src="{{asset('assets/jquery/jquery-3.6.0.js')}}"></script>
+    <!-- Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap-5.1.3/css/bootstrap.min.css') }} ">
+    <script src="{{ asset('assets/bootstrap-5.1.3/js/bootstrap.bundle.js') }}"></script>
+    <script src="{{ asset('assets/jquery/jquery-3.6.0.js') }}"></script>
 </head>
 
 <body class="antialiased">
@@ -416,7 +425,8 @@
         @if (Route::has('login'))
             <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                 @auth
-                    <a href="{{ url('/home') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Home</a>
+                    <a href="{{ url('/dashboard') }}"
+                        class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
                 @else
                     <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Log in</a>
 
@@ -426,11 +436,11 @@
                     @endif
                 @endauth
             </div>
+            <div class="d-flex flex-column">
+                <h1><a class="btn btn-success" href="{{ route('students.index') }}">資料庫CRUD範例</a></h1>
+                <h1><a class="btn btn-info" href="{{ route('cars.index') }}">範例2</a></h1>
+            </div>
         @endif
-        <div class="d-flex flex-column">
-            <h1><a class="btn btn-success" href="{{ route('students.index') }}">資料庫CRUD範例</a></h1>
-            <h1><a class="btn btn-info" href="{{ route('cars.index') }}">範例2</a></h1>
-        </div>
     </div>
 </body>
 
